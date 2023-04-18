@@ -8,9 +8,8 @@ public class MovementController : MonoBehaviour
     public FootController footController;
     public float jumpForce = 400f;
     private Rigidbody2D rb;
-    public IzquierdaPared izquierdaPared;
-    public DerechaPared derechaPared;
-    
+    public LateralesController lateralesController;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,13 +17,24 @@ public class MovementController : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space) && footController.CanJump())
-        {
-            rb.AddForce(transform.up * jumpForce);
-            footController.Jump();
-        }
-      
+        //if (Input.GetKeyUp(KeyCode.Space) && footController.CanJump())
+        //{
+        //    rb.AddForce(transform.up * jumpForce);
+        //    footController.Jump();
+        //}
+        bool goJump = (footController.canJump && !lateralesController.nextJump()) || (footController.canJump && lateralesController.nextJump()) || (!footController.canJump && lateralesController.nextJump());
 
+        if (Input.GetKeyDown(KeyCode.Space) && goJump)
+        {
+            this.impulseAdd(this.jumpForce);
+
+        }
     }
-  
+    private void impulseAdd(float jumpForce)
+    {
+        rb.AddForce(new Vector2(0, jumpForce));
+        footController.canJump = false;
+        lateralesController.validationJump();
+    }
+
 }

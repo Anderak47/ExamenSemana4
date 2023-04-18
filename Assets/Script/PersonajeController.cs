@@ -9,8 +9,8 @@ public class PersonajeController : MonoBehaviour
     Animator animator;
     private int currentAnimation = 1;
     SpriteRenderer sr;
-    
-    
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,7 +27,7 @@ public class PersonajeController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             currentAnimation = 2;
-            rb.velocity = new Vector2(5, velocityY);
+            rb.velocity = new Vector2(12, velocityY);
             sr.flipX = false;
 
         }
@@ -43,7 +43,7 @@ public class PersonajeController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             currentAnimation = 2;
-            rb.velocity = new Vector2(-5, velocityY);
+            rb.velocity = new Vector2(-12, velocityY);
             sr.flipX = true;
 
         }
@@ -89,6 +89,7 @@ public class PersonajeController : MonoBehaviour
             currentAnimation = 6;
             rb.velocity = new Vector2(0, velocityY);
         }
+       
         animator.SetInteger("Estado", currentAnimation);
     }
 }

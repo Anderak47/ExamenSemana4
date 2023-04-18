@@ -6,7 +6,7 @@ public class zombieController : MonoBehaviour
 {
     SpriteRenderer sr;
     Animator animator;
-    public float velocity = 0.3f;
+    public float velocity = 0.9f;
     private Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
