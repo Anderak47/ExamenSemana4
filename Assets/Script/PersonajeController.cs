@@ -9,7 +9,10 @@ public class PersonajeController : MonoBehaviour
     Animator animator;
     private int currentAnimation = 1;
     SpriteRenderer sr;
-    public Cabeza1Controller controller;    
+    public Cabeza1Controller controller;
+    //bala
+    public Transform firePoint;
+    public GameObject bullet;
 
     void Start()
     {
@@ -100,6 +103,10 @@ public class PersonajeController : MonoBehaviour
         {
             currentAnimation = 6;
             rb.velocity = new Vector2(0, velocityY);
+        }
+        if (Input.GetKey(KeyCode.A)) {
+            Instantiate(bullet, transform.position, Quaternion.identity);
+
         }
        
         animator.SetInteger("Estado", currentAnimation);
