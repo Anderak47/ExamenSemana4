@@ -8,7 +8,7 @@ public class FootController : MonoBehaviour
     //private bool onGround = false;
     //private int currentJumps = 0;
     public bool canJump = false;
-    public int currentJump = 0;
+    //public int currentJump = 0;
 
     //public bool CanJump()
     //{
@@ -22,7 +22,7 @@ public class FootController : MonoBehaviour
     //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
+        //Debug.Log(collision.gameObject.name);
         //onGround = true;
         //currentJumps = 0;
         canJump = true;

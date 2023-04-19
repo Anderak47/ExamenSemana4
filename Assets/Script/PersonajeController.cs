@@ -9,7 +9,7 @@ public class PersonajeController : MonoBehaviour
     Animator animator;
     private int currentAnimation = 1;
     SpriteRenderer sr;
-
+    public Cabeza1Controller controller;    
 
     void Start()
     {
@@ -27,9 +27,15 @@ public class PersonajeController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             currentAnimation = 2;
-            rb.velocity = new Vector2(12, velocityY);
+            rb.velocity = new Vector2(13, velocityY);
             sr.flipX = false;
 
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && controller.zombieJump())
+        {
+            currentAnimation = 2;
+            rb.velocity = new Vector2(30, velocityY);
+            sr.flipX = false;
         }
         //correr
         if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.X))
@@ -43,9 +49,15 @@ public class PersonajeController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             currentAnimation = 2;
-            rb.velocity = new Vector2(-12, velocityY);
+            rb.velocity = new Vector2(-13, velocityY);
             sr.flipX = true;
 
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && controller.zombieJump())
+        {
+            currentAnimation = 2;
+            rb.velocity = new Vector2(-30, velocityY);
+            sr.flipX = true;
         }
         if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.X))
         {

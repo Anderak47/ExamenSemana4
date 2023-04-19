@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Pared
   - PasoZombie
+  - DeadZombie
   layers:
   - Default
   - TransparentFX
