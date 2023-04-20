@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class zombieController : MonoBehaviour
+public class GeneradorZombieController : MonoBehaviour
 {
     SpriteRenderer sr;
     Animator animator;
@@ -14,20 +14,18 @@ public class zombieController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
     }
+
     void Update()
     {
-
         rb.velocity = new Vector2(-velocity, 0);
         sr.flipX = true;
-
     }
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("");
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "balaDead")
         {
-            Debug.Log("chocozombie");
-            Time.timeScale = 0;
+            Debug.Log("Entro trigger bala");
+            Destroy(this.gameObject);
         }
     }
 }
