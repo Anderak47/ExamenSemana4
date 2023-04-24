@@ -12,13 +12,20 @@ public class PersonajeController : MonoBehaviour
     private int currentAnimation = 1;
     SpriteRenderer sr;
     public Cabeza1Controller controller;
-    public DisparoController disparoController;
-    //bala
-    public Transform firePoint;
-    public GameObject bullet;
 
     public GameObject Disparo;
     public float velocityX = 0.1f;
+
+    public Transform PuntoBala;
+    public GameObject MoventBala;
+
+    public GameObject MoventBala2;
+    public GameObject MoventBala3;
+
+    //
+    public GameObject MoventBalaPrefab;
+  
+    //
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -110,25 +117,42 @@ public class PersonajeController : MonoBehaviour
             currentAnimation = 6;
             rb.velocity = new Vector2(0, velocityY);
         }
-        if (Input.GetKeyUp(KeyCode.O))
+        if (Input.GetKeyUp(KeyCode.A))
         {
-            // Dispara hacia la izquierda
+            currentAnimation = 3;
             var currentPosition = transform.position;
-            var position = new Vector3(currentPosition.x - 5, currentPosition.y, 10);
-            var balaGO = Instantiate(bullet, position, Quaternion.identity);
-            var controller = balaGO.GetComponent<DisparoController>();
-            controller.velocity1 = -10f;
-            sr.flipX = true;
+            var position = new Vector3(currentPosition.x - 2, currentPosition.y, 10);
+            var balaGO = Instantiate(MoventBalaPrefab, PuntoBala.position, Quaternion.identity);
+            var controller = balaGO.GetComponent<MoventBalaController>();
+            controller.velocidad = 10f;
+            MoventBala = balaGO;
+
         }
-        else if (Input.GetKeyUp(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Z) && MoventBala != null)
         {
-            // Dispara hacia la derecha
-            var currentPosition = transform.position;
-            var position = new Vector3(currentPosition.x + 5, currentPosition.y, 10);
-            var balaGO = Instantiate(bullet, position, Quaternion.identity);
-            var controller = balaGO.GetComponent<DisparoController>();
-            controller.velocity1 = 10f;
-            sr.flipX = false;
+            currentAnimation = 3;
+            // Instanciamos la primera bala en su posición actual
+            var balaGO = Instantiate(MoventBala, MoventBala.transform.position, Quaternion.identity);
+            var controller = balaGO.GetComponent<MoventBalaController>();
+            controller.velocidad = 10f;
+            controller.velocidadY = 0f;
+
+            // Instanciamos la segunda bala en la posición de la primera bala, con una ligera desviación hacia arriba
+            var bala2 = Instantiate(MoventBala2, MoventBala.transform.position + new Vector3(0.5f, 0.5f, 0f), Quaternion.identity);
+            var controller2 = bala2.GetComponent<MoventBalaController>();
+            controller2.velocidad = 10f;
+            controller2.velocidadY = 5f;
+
+            // Instanciamos la tercera bala en la posición de la primera bala, con una ligera desviación hacia abajo
+            var bala3 = Instantiate(MoventBala3, MoventBala.transform.position + new Vector3(0.5f, -0.5f, 0f), Quaternion.identity);
+            var controller3 = bala3.GetComponent<MoventBalaController>();
+            controller3.velocidad = 10f;
+            controller3.velocidadY = -5f;
+            Destroy(MoventBala, 5f);
+            Destroy(balaGO, 5f);
+            Destroy(bala2, 5f);
+            Destroy(bala3, 5f);
+            MoventBala = null;
         }
         animator.SetInteger("Estado", currentAnimation);
     }
