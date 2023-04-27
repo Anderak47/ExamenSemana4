@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MovementController : MonoBehaviour
 {
     public FootController footController;
     public float jumpForce = 400f;
     private Rigidbody2D rb;
     public LateralesController lateralesController;
-
+ 
+    public AudioClip [] audios;
+    private AudioSource audioSource;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        audioSource = GetComponent<AudioSource>();
+      
     }
     void Update()
     {
@@ -27,7 +31,7 @@ public class MovementController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && goJump)
         {
             this.impulseAdd(this.jumpForce);
-
+            audioSource.PlayOneShot(audios[0]);
         }
     }
     private void impulseAdd(float jumpForce)

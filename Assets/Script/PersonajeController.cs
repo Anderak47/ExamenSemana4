@@ -14,23 +14,30 @@ public class PersonajeController : MonoBehaviour
     public Cabeza1Controller controller;
 
     public GameObject Disparo;
-    public float velocityX = 0.1f;
 
     public Transform PuntoBala;
-    public GameObject MoventBala;
+    public GameObject MoventBala; //bala
 
+    //private Transform balaTransform; //PF
+    //private bool balaExiste = false;  //PF
     public GameObject MoventBala2;
     public GameObject MoventBala3;
-
     //
     public GameObject MoventBalaPrefab;
-  
+
+    ////
+    public GameObject gameManager;
     //
+    public AudioClip[] audios;
+    private AudioSource audioSource;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -117,17 +124,36 @@ public class PersonajeController : MonoBehaviour
             currentAnimation = 6;
             rb.velocity = new Vector2(0, velocityY);
         }
+        Disparaar();
+        DividirBala();
+        animator.SetInteger("Estado", currentAnimation);
+    }
+    private void Disparaar() {
         if (Input.GetKeyUp(KeyCode.A))
         {
-            currentAnimation = 3;
-            var currentPosition = transform.position;
-            var position = new Vector3(currentPosition.x - 2, currentPosition.y, 10);
-            var balaGO = Instantiate(MoventBalaPrefab, PuntoBala.position, Quaternion.identity);
-            var controller = balaGO.GetComponent<MoventBalaController>();
-            controller.velocidad = 10f;
-            MoventBala = balaGO;
-
+            var gm = gameManager.GetComponent<GameManager>();
+            var uim = gameManager.GetComponent<UIManager>();
+            //aca balidas si el numero de balas es mayor a 0
+            if (gm.GetBalas() > 0)
+            {
+                currentAnimation = 3;
+                var currentPosition = transform.position;
+                var position = new Vector3(currentPosition.x - 2, currentPosition.y, 10);
+                var balaGO = Instantiate(MoventBalaPrefab, PuntoBala.position, Quaternion.identity);
+                var controller = balaGO.GetComponent<MoventBalaController>();
+                controller.velocidad = 10f;
+                MoventBala = balaGO;
+                audioSource.PlayOneShot(audios[0], 5);
+                //metodo disparar que va reduciendo segun dispares
+                gm.Disparar();
+                //imprimes el mensaje en pantalla de las balas.
+                uim.PrintBalasPuntaje(gm.GetBalas());
+            }
+            else
+                Debug.Log("No tienes balas:");
         }
+    }
+    private void DividirBala() {
         if (Input.GetKeyDown(KeyCode.Z) && MoventBala != null)
         {
             currentAnimation = 3;
@@ -153,7 +179,55 @@ public class PersonajeController : MonoBehaviour
             Destroy(bala2, 5f);
             Destroy(bala3, 5f);
             MoventBala = null;
+            audioSource.PlayOneShot(audios[0],5);
         }
-        animator.SetInteger("Estado", currentAnimation);
     }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        //si choca pierde vidas el zombie
+        if (collision.gameObject.tag == "DeadZombie")
+        {
+            Debug.Log("Personaje choco con zombie");
+            var gm = gameManager.GetComponent<GameManager>();
+            var uim = gameManager.GetComponent<UIManager>();
+            gm.PerderVidas();
+            uim.PrinteVidasPersonaje(gm.GetVidasJugador());
+        }
+    }
+
+    //private void Disparar()
+    //{
+
+    //    if (Input.GetKeyUp(KeyCode.A))
+    //    {
+    //        balaExiste = true;
+    //        var position = transform.position;
+    //        var x = position.x + 1;
+    //        var newPosition = new Vector3(x, position.y, position.z);
+
+    //        GameObject balaGenerada = Instantiate(MoventBala, newPosition, Quaternion.identity);
+    //        balaTransform = balaGenerada.transform;
+    //    }
+    //}
+    //private void DividirDisparo()
+    //{
+    //    solo se divide si la bala existe y presiono C
+    //    transform.position
+    //    if (balaExiste && Input.GetKeyUp(KeyCode.Z))
+    //    {
+
+    //        var position = balaTransform.position;
+    //        var positionBala2 = new Vector3(position.x + 1, position.y + 1, position.z);
+    //        var positionBala3 = new Vector3(position.x + 1, position.y - 1, position.z);
+
+    //        GameObject balaGenerada2 = Instantiate(MoventBala, positionBala2, Quaternion.identity);
+
+    //        (balaGenerada2.GetComponent<MoventBalaController>()).velocityY = 1;
+
+    //        GameObject balaGenerada3 = Instantiate(MoventBala, positionBala3, Quaternion.identity);
+
+    //        (balaGenerada3.GetComponent<MoventBalaController>()).velocityY = -1;
+    //    }
+    //}
+
 }

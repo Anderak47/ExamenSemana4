@@ -8,11 +8,17 @@ public class GeneradorZombieController : MonoBehaviour
     Animator animator;
     public float velocity = 0.9f;
     private Rigidbody2D rb;
+    //agregar esto para un prefab
+    public GameManager gameManager;
+    public int balasRecibidas = 0;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+
+        //agregar esto para un prefab
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
@@ -24,8 +30,20 @@ public class GeneradorZombieController : MonoBehaviour
     {
         if (collision.gameObject.tag == "balaDead")
         {
-            Debug.Log("Entro trigger bala");
-            Destroy(this.gameObject);
-        }
+            //para que lo mate de 2 balas
+            balasRecibidas++;
+            if (balasRecibidas == 2)
+            {
+                NumeroMuerte();
+                Destroy(this.gameObject);
+            }
+        }  
+    }
+    private void NumeroMuerte()
+    {
+        var gm = gameManager.GetComponent<GameManager>();
+        var uim = gameManager.GetComponent<UIManager>();
+        gm.MuerteZombie();
+        uim.PrintMuerteZombie(gm.GetMuerte());
     }
 }

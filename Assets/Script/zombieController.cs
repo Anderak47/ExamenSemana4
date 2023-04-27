@@ -8,11 +8,17 @@ public class zombieController : MonoBehaviour
     Animator animator;
     public float velocity = 0.9f;
     private Rigidbody2D rb;
+
+    public GameManager gameManager;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+
+        //agregar cuando es un Trigger
+        gameManager = FindObjectOfType<GameManager>();
+
     }
     void Update()
     {
@@ -21,13 +27,17 @@ public class zombieController : MonoBehaviour
         sr.flipX = true;
 
     }
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("");
-        if (collision.gameObject.tag == "Player")
-        {
-            Debug.Log("chocozombie");
-            Time.timeScale = 0;
+        if (collision.gameObject.tag=="balaDead") {
+            Debug.Log("entro triguer zombie controllerr");
+            MuertesZombie3();
         }
+    }
+    public void MuertesZombie3() {
+        var gm = gameManager.GetComponent<GameManager>();
+        var uim = gameManager.GetComponent<UIManager>();
+        gm.MuerteZombie();
+        uim.PrintMuerteZombie(gm.GetMuerte());
     }
 }

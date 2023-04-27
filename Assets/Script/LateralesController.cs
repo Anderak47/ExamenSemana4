@@ -5,7 +5,6 @@ using UnityEngine;
 public class LateralesController : MonoBehaviour
 {
     public bool JumpWall = false;
-
     public bool nextJump()
     {
         if (JumpWall)
@@ -22,13 +21,11 @@ public class LateralesController : MonoBehaviour
 
     public void OnCollisionStay2D(Collision2D collision)
     {
-        Debug.Log("Personaje en pared");
         //Debug.Log(collision.gameObject.name);
         //if (collision.gameObject.tag=="Pared") {
         //    JumpWall = true;
 
-        //}    
+        //}
         JumpWall = true;
     }
-
 }

@@ -8,21 +8,25 @@ public class MoventBalaController : MonoBehaviour
     public float velocidad;
     public float velocidadY = 0f;
 
+    //PF
+    //public float velocityX = 0.1f;
+    //public float velocityY = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         Destroy(this.gameObject, 7);
-
     }
     void Update()
     {
         transform.position += new Vector3(velocidad * Time.deltaTime, velocidadY * Time.deltaTime, 0);
+        //rb.velocity = new Vector2(velocityX, velocityY); //PF
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "DeadZombie")
+        if (collision.gameObject.CompareTag("DeadZombie")) 
         {
-            Debug.Log("colisiono con zombie");
+            Debug.Log("Bala colisiono con zombie");
             Destroy(this.gameObject);
         }
     }
